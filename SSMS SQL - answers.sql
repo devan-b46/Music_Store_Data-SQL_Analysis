@@ -3,6 +3,8 @@ CREATE DATABASE MusicStore
 USE MusicStore
 
 
+
+-- Question Set 1. Basic
 -- 1. Who is the senior most employee based on the job title?
 select TOP 1 first_name,last_name,max(levels) 
 from employee
@@ -33,6 +35,8 @@ SELECT TOP 1 customer_id, SUM(TOTAL) total_invoice
 FROM invoice
 GROUP BY customer_id
 ORDER BY total_invoice DESC
+
+
 
 
 
@@ -115,9 +119,9 @@ order by milliseconds desc
 
 
 
--- Question Set 3: Advance
+-- Question Set 3: Advanced
+
 -- 1. Find how much amount spent by each customer on artists? Write a query to return customer name, artist name and total spent
--- 
 
 Select * from
 (
@@ -135,16 +139,21 @@ Select * from
 where ranks = 1
 
 
--- Using CTE to write this query about the maximum amount spent on the artist.
-
--- What rishabh did in video, he first got the highest selling artist and then found out the customers that paid for that artist.
--- I found the customers, the artist and the highest amount they paid for their top artist.
-
- 
-
- 
-
 -- 2. We want to find out the most popular music Genre for each country. We determine the most popular genre as the genre with the highest amount of purchases. Write a query that returns each country along with the top Genre. For countries where the maximum number of purchases is shared return all Genres.
+
+
+with ranking_genre as (
+select billing_country,g.name,sum(total) total_spent,
+	DENSE_RANK() Over (partition by billing_country order by sum(total) desc) ranks
+from invoice i
+inner join invoice_line il on i.invoice_id=il.invoice_id
+inner join track t on t.track_id = il.track_id
+inner join genre g on g.genre_id = t.genre_id
+group by billing_country,g.name
+)
+
+select * from ranking_genre
+where ranks = 1
 
 
 
@@ -159,12 +168,5 @@ inner join customer c on c.customer_id=i.customer_id
 group by billing_country,c.first_name+' '+c.last_name,i.customer_id
 ) as x
 where ranks = 1
-
-
-
-
-
-
-
 
 
