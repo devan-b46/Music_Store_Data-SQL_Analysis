@@ -71,22 +71,6 @@ order by email
 
 
 
--- from Gemini
-WITH RockTracks AS (
-  SELECT track_id
-  FROM track t
-  INNER JOIN genre g ON t.genre_id = g.genre_id
-  WHERE g.name LIKE 'rock%'
-)
-SELECT DISTINCT email, first_name, last_name
-FROM customer c
-INNER JOIN invoice i ON c.customer_id = i.customer_id
-INNER JOIN invoice_line il ON i.invoice_id = il.invoice_id
-WHERE il.track_id IN (SELECT track_id FROM RockTracks)
-ORDER BY email;
-
-
-
 -- 2. Let's invite the artists who have written the most rock music in our dataset. Write a query that returns the Artist name and total track count of the top 10 rock bands
 
 select top 10 ar.name artist_name,count(g.name) no_of_Rock_tracks
