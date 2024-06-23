@@ -137,21 +137,28 @@ where ranks = 1
 
 -- Using CTE to write this query about the maximum amount spent on the artist.
 
- -- What rishabh did in video, he first got the highest selling artist and then found out the customers that paid for that artist.
- -- I found the customers, the artist and the highest amount they paid for their top artist.
- 
+-- What rishabh did in video, he first got the highest selling artist and then found out the customers that paid for that artist.
+-- I found the customers, the artist and the highest amount they paid for their top artist.
 
  
 
+ 
 
 -- 2. We want to find out the most popular music Genre for each country. We determine the most popular genre as the genre with the highest amount of purchases. Write a query that returns each country along with the top Genre. For countries where the maximum number of purchases is shared return all Genres.
 
 
 
+-- 3. Write a query that determines the customer that has spent the most on music for each country. Write a query that returns the country along with the top customer and how much they spent. For countries where the top amount spent is shared, provide all customers who spent this amount
 
-
-
-
+select * from 
+(
+select c.first_name+' '+c.last_name customer_name,i.customer_id,billing_country,sum(total) total_spent,
+	DENSE_RANK() OVER (PARTITION BY billing_country ORDER BY SUM(TOTAL) DESC) RANKS
+from invoice i
+inner join customer c on c.customer_id=i.customer_id
+group by billing_country,c.first_name+' '+c.last_name,i.customer_id
+) as x
+where ranks = 1
 
 
 
