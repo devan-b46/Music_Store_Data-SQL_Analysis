@@ -24,13 +24,13 @@ select top 3 total from invoice
 order by total desc
 
 
--- 4. Q4: Which city has the best customers? We would like to throw a promotional Music Festival in the city we made the most money. Write a query that returns one city that has the highest sum of invoice totals. Return both the city name & sum of all invoice totals
+-- 4. Which city has the best customers? We would like to throw a promotional Music Festival in the city we made the most money. Write a query that returns one city that has the highest sum of invoice totals. Return both the city name & sum of all invoice totals
 SELECT TOP 1 billing_city,SUM(TOTAL) total_sum FROM invoice
 GROUP BY billing_city
 ORDER BY total_sum DESC
 
 
--- 5. Q5: Who is the best customer? The customer who has spent the most money will be declared the best customer. Write a query that returns the person who has spent the most money.
+-- 5. Who is the best customer? The customer who has spent the most money will be declared the best customer. Write a query that returns the person who has spent the most money.
 SELECT TOP 1 customer_id, SUM(TOTAL) total_invoice
 FROM invoice
 GROUP BY customer_id
@@ -42,7 +42,7 @@ ORDER BY total_invoice DESC
 
 -- Question Set 2: Medium
 
--- 1. Q1: Write query to return the email, first name, last name, & Genre of all Rock Music listeners. Return your list ordered alphabetically by email starting with A
+-- 1. Write query to return the email, first name, last name, & Genre of all Rock Music listeners. Return your list ordered alphabetically by email starting with A
 
 select distinct email,first_name,last_name from customer c
 inner join invoice i on c.customer_id=i.customer_id
